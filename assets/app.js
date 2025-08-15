@@ -69,15 +69,60 @@
   function fmt2(x) { return (Number(x)||0).toFixed(2); }
 
   function render() {
-    el('nilai_ketua').textContent = fmt2(calcRataKetua(state));
-    el('nilai_p1').textContent = fmt2(calcRataP1(state));
-    el('nilai_p2').textContent = fmt2(calcRataP2(state));
-    el('nilai_bimbingan').textContent = fmt2(calcBimbingan(state));
+    // Calculate subtotals for each category
+    // Ketua
+    el('ketua_presentasi_sub').textContent = fmt2(state.ketua.presentasi * W.ketua.presentasi);
+    el('ketua_materi_sub').textContent = fmt2(state.ketua.materi * W.ketua.materi);
+    el('ketua_penulisan_sub').textContent = fmt2(state.ketua.penulisan * W.ketua.penulisan);
+    el('ketua_hasil_sub').textContent = fmt2(state.ketua.hasil * W.ketua.hasil);
+    
+    // Penguji 1
+    el('p1_presentasi_sub').textContent = fmt2(state.p1.presentasi * W.p1.presentasi);
+    el('p1_materi_sub').textContent = fmt2(state.p1.materi * W.p1.materi);
+    el('p1_penulisan_sub').textContent = fmt2(state.p1.penulisan * W.p1.penulisan);
+    el('p1_hasil_sub').textContent = fmt2(state.p1.hasil * W.p1.hasil);
+    
+    // Penguji 2
+    el('p2_cara_sub').textContent = fmt2(state.p2.cara * W.p2.cara);
+    el('p2_kecepatan_sub').textContent = fmt2(state.p2.kecepatan * W.p2.kecepatan);
+    el('p2_ketepatan_sub').textContent = fmt2(state.p2.ketepatan * W.p2.ketepatan);
+    
+    // Bimbingan
+    el('bim_ketepatan_sub').textContent = fmt2(state.bimbingan.ketepatan * W.bimbingan.ketepatan);
+    el('bim_ketekunan_sub').textContent = fmt2(state.bimbingan.ketekunan * W.bimbingan.ketekunan);
+    el('bim_tingkahlaku_sub').textContent = fmt2(state.bimbingan.tingkahlaku * W.bimbingan.tingkahlaku);
+    
+    // Calculate totals for each section
+    const nilaiKetua = calcRataKetua(state);
+    const nilaiP1 = calcRataP1(state);
+    const nilaiP2 = calcRataP2(state);
+    const nilaiBimbingan = calcBimbingan(state);
+    
+    el('nilai_ketua').textContent = fmt2(nilaiKetua);
+    el('nilai_p1').textContent = fmt2(nilaiP1);
+    el('nilai_p2').textContent = fmt2(nilaiP2);
+    el('nilai_bimbingan').textContent = fmt2(nilaiBimbingan);
 
-    const totalSidang = calcTotalSidang(state);
-    const nilaiAkhir = calcNilaiAkhir(state);
-
+    // Calculate contributions to Total Nilai Sidang
+    const kontribKetua = nilaiKetua * W.antarPenguji.ketua;
+    const kontribP1 = nilaiP1 * W.antarPenguji.p1;
+    const kontribP2 = nilaiP2 * W.antarPenguji.p2;
+    const totalSidang = kontribKetua + kontribP1 + kontribP2;
+    
+    el('kontrib_ketua').textContent = fmt2(kontribKetua);
+    el('kontrib_p1').textContent = fmt2(kontribP1);
+    el('kontrib_p2').textContent = fmt2(kontribP2);
     el('total_sidang').textContent = fmt2(totalSidang);
+
+    // Calculate contributions to Nilai Akhir
+    const kontribSeminar = state.seminar * W.ringkasan.seminar;
+    const kontribSidang = totalSidang * W.ringkasan.sidang;
+    const kontribBimbingan = nilaiBimbingan * W.ringkasan.bimbingan;
+    const nilaiAkhir = kontribSeminar + kontribSidang + kontribBimbingan;
+    
+    el('kontrib_seminar').textContent = fmt2(kontribSeminar);
+    el('kontrib_sidang').textContent = fmt2(kontribSidang);
+    el('kontrib_bimbingan').textContent = fmt2(kontribBimbingan);
     el('nilai_akhir').textContent = fmt2(nilaiAkhir);
     el('grade').textContent = toGrade(nilaiAkhir);
   }

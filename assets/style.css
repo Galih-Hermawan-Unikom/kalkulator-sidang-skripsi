@@ -21,6 +21,7 @@ table { width: 100%; border-collapse: collapse; }
 th, td { border-bottom: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; }
 thead th { background: #f1f5f9; font-size: 0.9rem; }
 tfoot td { background: #f8fafc; }
+.subtotal { background: #fefefe; font-weight: 500; color: #475569; text-align: right; }
 
 /* inputs */
 input[type="number"], input[type="text"] { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 8px; }
@@ -31,6 +32,10 @@ input[type="number"]:focus, input[type="text"]:focus { outline: none; border-col
 .summary-box { display: grid; gap: 10px; padding: 12px; border: 1px dashed #cbd5e1; border-radius: 10px; background: #f8fafc; }
 .summary-box > div { display: flex; justify-content: space-between; align-items: center; }
 .summary-box strong { font-size: 1.15rem; color: #0f172a; }
+.subtotal-line { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 4px; }
+.grade-line { border-top: 2px solid #374151; padding-top: 8px; margin-top: 4px; }
+.grade-line strong { font-size: 1.3rem; color: #dc2626; }
+.spacing { height: 8px; }
 
 .note { margin-top: 10px; color: #475569; font-size: 0.9rem; }
 

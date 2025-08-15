@@ -22,6 +22,7 @@
                 <th>Aspek</th>
                 <th style="width: 7rem">Nilai (0-100)</th>
                 <th style="width: 6rem">Bobot</th>
+                <th style="width: 6rem">Subtotal</th>
               </tr>
             </thead>
             <tbody>
@@ -30,29 +31,33 @@
                 <td>Presentasi</td>
                 <td><input class="nilai-input" id="ketua_presentasi" type="number" min="0" max="100" step="0.01" /></td>
                 <td>20%</td>
+                <td class="subtotal" id="ketua_presentasi_sub">0.00</td>
               </tr>
               <tr>
                 <td>2</td>
                 <td>Penguasaan Materi</td>
                 <td><input class="nilai-input" id="ketua_materi" type="number" min="0" max="100" step="0.01" /></td>
                 <td>30%</td>
+                <td class="subtotal" id="ketua_materi_sub">0.00</td>
               </tr>
               <tr>
                 <td>3</td>
                 <td>Penulisan</td>
                 <td><input class="nilai-input" id="ketua_penulisan" type="number" min="0" max="100" step="0.01" /></td>
                 <td>15%</td>
+                <td class="subtotal" id="ketua_penulisan_sub">0.00</td>
               </tr>
               <tr>
                 <td>4</td>
                 <td>Hasil Akhir</td>
                 <td><input class="nilai-input" id="ketua_hasil" type="number" min="0" max="100" step="0.01" /></td>
                 <td>35%</td>
+                <td class="subtotal" id="ketua_hasil_sub">0.00</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="3" class="right"><strong>Nilai Ketua</strong></td>
+                <td colspan="4" class="right"><strong>Nilai Ketua</strong></td>
                 <td><strong id="nilai_ketua">0.00</strong></td>
               </tr>
             </tfoot>
@@ -68,6 +73,7 @@
                 <th>Aspek</th>
                 <th style="width: 7rem">Nilai (0-100)</th>
                 <th style="width: 6rem">Bobot</th>
+                <th style="width: 6rem">Subtotal</th>
               </tr>
             </thead>
             <tbody>
@@ -76,29 +82,33 @@
                 <td>Presentasi</td>
                 <td><input class="nilai-input" id="p1_presentasi" type="number" min="0" max="100" step="0.01" /></td>
                 <td>20%</td>
+                <td class="subtotal" id="p1_presentasi_sub">0.00</td>
               </tr>
               <tr>
                 <td>2</td>
                 <td>Penguasaan Materi</td>
                 <td><input class="nilai-input" id="p1_materi" type="number" min="0" max="100" step="0.01" /></td>
                 <td>30%</td>
+                <td class="subtotal" id="p1_materi_sub">0.00</td>
               </tr>
               <tr>
                 <td>3</td>
                 <td>Penulisan</td>
                 <td><input class="nilai-input" id="p1_penulisan" type="number" min="0" max="100" step="0.01" /></td>
                 <td>15%</td>
+                <td class="subtotal" id="p1_penulisan_sub">0.00</td>
               </tr>
               <tr>
                 <td>4</td>
                 <td>Hasil Akhir</td>
                 <td><input class="nilai-input" id="p1_hasil" type="number" min="0" max="100" step="0.01" /></td>
                 <td>35%</td>
+                <td class="subtotal" id="p1_hasil_sub">0.00</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="3" class="right"><strong>Nilai Penguji 1</strong></td>
+                <td colspan="4" class="right"><strong>Nilai Penguji 1</strong></td>
                 <td><strong id="nilai_p1">0.00</strong></td>
               </tr>
             </tfoot>
@@ -114,6 +124,7 @@
                 <th>Aspek</th>
                 <th style="width: 7rem">Nilai (0-100)</th>
                 <th style="width: 6rem">Bobot</th>
+                <th style="width: 6rem">Subtotal</th>
               </tr>
             </thead>
             <tbody>
@@ -122,23 +133,26 @@
                 <td>Ketepatan</td>
                 <td><input class="nilai-input" id="bim_ketepatan" type="number" min="0" max="100" step="0.01" /></td>
                 <td>40%</td>
+                <td class="subtotal" id="bim_ketepatan_sub">0.00</td>
               </tr>
               <tr>
                 <td>2</td>
                 <td>Ketekunan & Usaha</td>
                 <td><input class="nilai-input" id="bim_ketekunan" type="number" min="0" max="100" step="0.01" /></td>
                 <td>30%</td>
+                <td class="subtotal" id="bim_ketekunan_sub">0.00</td>
               </tr>
               <tr>
                 <td>3</td>
                 <td>Tingkah Laku</td>
                 <td><input class="nilai-input" id="bim_tingkahlaku" type="number" min="0" max="100" step="0.01" /></td>
                 <td>30%</td>
+                <td class="subtotal" id="bim_tingkahlaku_sub">0.00</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="3" class="right"><strong>Nilai Bimbingan</strong></td>
+                <td colspan="4" class="right"><strong>Nilai Bimbingan</strong></td>
                 <td><strong id="nilai_bimbingan">0.00</strong></td>
               </tr>
             </tfoot>
@@ -154,6 +168,7 @@
                 <th>Aspek</th>
                 <th style="width: 7rem">Nilai (0-100)</th>
                 <th style="width: 6rem">Bobot</th>
+                <th style="width: 6rem">Subtotal</th>
               </tr>
             </thead>
             <tbody>
@@ -162,23 +177,26 @@
                 <td>Cara Menjawab</td>
                 <td><input class="nilai-input" id="p2_cara" type="number" min="0" max="100" step="0.01" /></td>
                 <td>30%</td>
+                <td class="subtotal" id="p2_cara_sub">0.00</td>
               </tr>
               <tr>
                 <td>2</td>
                 <td>Kecepatan Menjawab</td>
                 <td><input class="nilai-input" id="p2_kecepatan" type="number" min="0" max="100" step="0.01" /></td>
                 <td>30%</td>
+                <td class="subtotal" id="p2_kecepatan_sub">0.00</td>
               </tr>
               <tr>
                 <td>3</td>
                 <td>Ketepatan Menjawab</td>
                 <td><input class="nilai-input" id="p2_ketepatan" type="number" min="0" max="100" step="0.01" /></td>
                 <td>40%</td>
+                <td class="subtotal" id="p2_ketepatan_sub">0.00</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="3" class="right"><strong>Nilai Penguji 2</strong></td>
+                <td colspan="4" class="right"><strong>Nilai Penguji 2</strong></td>
                 <td><strong id="nilai_p2">0.00</strong></td>
               </tr>
             </tfoot>
@@ -196,15 +214,40 @@
 
           <div class="summary-box">
             <div>
-              <span>Total Nilai Sidang (42.5% Ketua + 42.5% Penguji 1 + 15% Penguji 2)</span>
+              <span>Ketua Penguji (42.5%)</span>
+              <strong id="kontrib_ketua">0.00</strong>
+            </div>
+            <div>
+              <span>Anggota Penguji 1 (42.5%)</span>
+              <strong id="kontrib_p1">0.00</strong>
+            </div>
+            <div>
+              <span>Anggota Penguji 2 (15%)</span>
+              <strong id="kontrib_p2">0.00</strong>
+            </div>
+            <div class="subtotal-line">
+              <span><strong>Total Nilai Sidang</strong></span>
               <strong id="total_sidang">0.00</strong>
             </div>
+            <div class="spacing"></div>
             <div>
-              <span>Nilai Akhir (30% Seminar + 40% Sidang + 30% Bimbingan)</span>
-              <strong id="nilai_akhir">0.00</strong>
+              <span>Nilai Seminar (30%)</span>
+              <strong id="kontrib_seminar">0.00</strong>
             </div>
             <div>
-              <span>Grade</span>
+              <span>Nilai Sidang (40%)</span>
+              <strong id="kontrib_sidang">0.00</strong>
+            </div>
+            <div>
+              <span>Nilai Bimbingan (30%)</span>
+              <strong id="kontrib_bimbingan">0.00</strong>
+            </div>
+            <div class="subtotal-line">
+              <span><strong>Nilai Akhir</strong></span>
+              <strong id="nilai_akhir">0.00</strong>
+            </div>
+            <div class="grade-line">
+              <span><strong>Grade</strong></span>
               <strong id="grade">-</strong>
             </div>
           </div>
