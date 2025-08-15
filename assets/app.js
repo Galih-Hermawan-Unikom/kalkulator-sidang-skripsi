@@ -129,13 +129,27 @@
 
   function bindNumber(id, path) {
     const input = el(id);
+    
+    // Update state on input (allow partial typing like "85.")
     input.addEventListener('input', () => {
-      // clamp input value and update state
-      input.value = input.value === '' ? '' : clamp100(input.value);
       let ref = state;
       for (let i = 0; i < path.length - 1; i++) ref = ref[path[i]];
       ref[path[path.length - 1]] = Number(input.value || 0);
       render();
+    });
+    
+    // Clamp and validate when user finishes typing
+    input.addEventListener('blur', () => {
+      if (input.value !== '') {
+        const clamped = clamp100(input.value);
+        if (parseFloat(input.value) !== clamped) {
+          input.value = clamped.toString();
+          let ref = state;
+          for (let i = 0; i < path.length - 1; i++) ref = ref[path[i]];
+          ref[path[path.length - 1]] = clamped;
+          render();
+        }
+      }
     });
   }
 
