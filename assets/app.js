@@ -172,6 +172,17 @@
     };
   }
 
+  // Clear all inputs function
+  function clearAllInputs() {
+    // Reset all input elements only - let the event handlers update state and render
+    const inputs = document.querySelectorAll('input[type="number"]');
+    inputs.forEach(input => {
+      input.value = '';
+      // Trigger the input event to update state through existing handlers
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  }
+
   function init() {
     // Ketua
     bindNumber('ketua_presentasi', ['ketua','presentasi']);
@@ -197,6 +208,12 @@
 
     // Seminar
     bindNumber('nilai_seminar', ['seminar']);
+
+    // Add clear button event listener
+    const clearBtn = document.querySelector('.clear-btn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', clearAllInputs);
+    }
 
     render();
 
