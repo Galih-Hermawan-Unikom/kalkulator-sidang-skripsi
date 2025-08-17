@@ -82,6 +82,21 @@ footer { margin-top: 18px; color: #64748b; }
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }
   .summary-grid { grid-template-columns: 1fr; }
+  
+  /* Perbesar textbox di mobile */
+  input[type="number"] { 
+    padding: 12px 14px; 
+    font-size: 16px; 
+    min-width: 80px;
+  }
+  
+  /* Khusus untuk kolom input dalam tabel */
+  table td input[type="number"] {
+    padding: 12px 16px;
+    font-size: 16px;
+    min-width: 90px;
+    text-align: center;
+  }
 }
 
 /* buttons */
