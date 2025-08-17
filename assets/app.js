@@ -2,7 +2,7 @@
   'use strict';
 
   // Tanggal update terakhir - Edit disini untuk update tanggal
-  const LAST_UPDATED = "Sabtu, 17 Agustus 2025";
+  const LAST_UPDATED = "Ahad, 17 Agustus 2025";
 
   // Weights as per Excel template
   const W = {
