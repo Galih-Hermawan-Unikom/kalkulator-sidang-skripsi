@@ -1,6 +1,9 @@
 (function() {
   'use strict';
 
+  // Tanggal update terakhir - Edit disini untuk update tanggal
+  const LAST_UPDATED = "Sabtu, 17 Agustus 2025";
+
   // Weights as per Excel template
   const W = {
     ketua: { presentasi: 0.20, materi: 0.30, penulisan: 0.15, hasil: 0.35 },
@@ -217,14 +220,10 @@
 
     render();
 
-    // Set last updated date in Indonesian
+    // Set last updated date from constant
     const target = document.getElementById('last_updated');
     if (target) {
-      const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-      const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-      const d = new Date();
-      const s = `${hari[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
-      target.textContent = s;
+      target.textContent = LAST_UPDATED;
     }
   }
 
