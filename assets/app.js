@@ -1,9 +1,6 @@
 (function() {
   'use strict';
 
-  // Tanggal update terakhir - Edit disini untuk update tanggal
-  const LAST_UPDATED = "Ahad, 17 Agustus 2025";
-
   // Weights as per Excel template
   const W = {
     ketua: { presentasi: 0.20, materi: 0.30, penulisan: 0.15, hasil: 0.35 },
@@ -72,87 +69,28 @@
   function fmt2(x) { return (Number(x)||0).toFixed(2); }
 
   function render() {
-    // Calculate subtotals for each category
-    // Ketua
-    el('ketua_presentasi_sub').textContent = fmt2(state.ketua.presentasi * W.ketua.presentasi);
-    el('ketua_materi_sub').textContent = fmt2(state.ketua.materi * W.ketua.materi);
-    el('ketua_penulisan_sub').textContent = fmt2(state.ketua.penulisan * W.ketua.penulisan);
-    el('ketua_hasil_sub').textContent = fmt2(state.ketua.hasil * W.ketua.hasil);
-    
-    // Penguji 1
-    el('p1_presentasi_sub').textContent = fmt2(state.p1.presentasi * W.p1.presentasi);
-    el('p1_materi_sub').textContent = fmt2(state.p1.materi * W.p1.materi);
-    el('p1_penulisan_sub').textContent = fmt2(state.p1.penulisan * W.p1.penulisan);
-    el('p1_hasil_sub').textContent = fmt2(state.p1.hasil * W.p1.hasil);
-    
-    // Penguji 2
-    el('p2_cara_sub').textContent = fmt2(state.p2.cara * W.p2.cara);
-    el('p2_kecepatan_sub').textContent = fmt2(state.p2.kecepatan * W.p2.kecepatan);
-    el('p2_ketepatan_sub').textContent = fmt2(state.p2.ketepatan * W.p2.ketepatan);
-    
-    // Bimbingan
-    el('bim_ketepatan_sub').textContent = fmt2(state.bimbingan.ketepatan * W.bimbingan.ketepatan);
-    el('bim_ketekunan_sub').textContent = fmt2(state.bimbingan.ketekunan * W.bimbingan.ketekunan);
-    el('bim_tingkahlaku_sub').textContent = fmt2(state.bimbingan.tingkahlaku * W.bimbingan.tingkahlaku);
-    
-    // Calculate totals for each section
-    const nilaiKetua = calcRataKetua(state);
-    const nilaiP1 = calcRataP1(state);
-    const nilaiP2 = calcRataP2(state);
-    const nilaiBimbingan = calcBimbingan(state);
-    
-    el('nilai_ketua').textContent = fmt2(nilaiKetua);
-    el('nilai_p1').textContent = fmt2(nilaiP1);
-    el('nilai_p2').textContent = fmt2(nilaiP2);
-    el('nilai_bimbingan').textContent = fmt2(nilaiBimbingan);
+    el('nilai_ketua').textContent = fmt2(calcRataKetua(state));
+    el('nilai_p1').textContent = fmt2(calcRataP1(state));
+    el('nilai_p2').textContent = fmt2(calcRataP2(state));
+    el('nilai_bimbingan').textContent = fmt2(calcBimbingan(state));
 
-    // Calculate contributions to Total Nilai Sidang
-    const kontribKetua = nilaiKetua * W.antarPenguji.ketua;
-    const kontribP1 = nilaiP1 * W.antarPenguji.p1;
-    const kontribP2 = nilaiP2 * W.antarPenguji.p2;
-    const totalSidang = kontribKetua + kontribP1 + kontribP2;
-    
-    el('kontrib_ketua').textContent = fmt2(kontribKetua);
-    el('kontrib_p1').textContent = fmt2(kontribP1);
-    el('kontrib_p2').textContent = fmt2(kontribP2);
+    const totalSidang = calcTotalSidang(state);
+    const nilaiAkhir = calcNilaiAkhir(state);
+
     el('total_sidang').textContent = fmt2(totalSidang);
-
-    // Calculate contributions to Nilai Akhir
-    const kontribSeminar = state.seminar * W.ringkasan.seminar;
-    const kontribSidang = totalSidang * W.ringkasan.sidang;
-    const kontribBimbingan = nilaiBimbingan * W.ringkasan.bimbingan;
-    const nilaiAkhir = kontribSeminar + kontribSidang + kontribBimbingan;
-    
-    el('kontrib_seminar').textContent = fmt2(kontribSeminar);
-    el('kontrib_sidang').textContent = fmt2(kontribSidang);
-    el('kontrib_bimbingan').textContent = fmt2(kontribBimbingan);
     el('nilai_akhir').textContent = fmt2(nilaiAkhir);
     el('grade').textContent = toGrade(nilaiAkhir);
   }
 
   function bindNumber(id, path) {
     const input = el(id);
-    
-    // Update state on input (allow partial typing like "85.")
     input.addEventListener('input', () => {
+      // clamp input value and update state
+      input.value = input.value === '' ? '' : clamp100(input.value);
       let ref = state;
       for (let i = 0; i < path.length - 1; i++) ref = ref[path[i]];
       ref[path[path.length - 1]] = Number(input.value || 0);
       render();
-    });
-    
-    // Clamp and validate when user finishes typing
-    input.addEventListener('blur', () => {
-      if (input.value !== '') {
-        const clamped = clamp100(input.value);
-        if (parseFloat(input.value) !== clamped) {
-          input.value = clamped.toString();
-          let ref = state;
-          for (let i = 0; i < path.length - 1; i++) ref = ref[path[i]];
-          ref[path[path.length - 1]] = clamped;
-          render();
-        }
-      }
     });
   }
 
@@ -168,6 +106,17 @@
     return {
       nilai_ketua, nilai_p1, nilai_p2,
       nilai_bimbingan, total_sidang, nilai_akhir, grade,
+      seminar: state.seminar,
+      kontribusi_sidang: {
+        ketua: nilai_ketua * W.antarPenguji.ketua,
+        p1: nilai_p1 * W.antarPenguji.p1,
+        p2: nilai_p2 * W.antarPenguji.p2,
+      },
+      kontribusi_ringkasan: {
+        seminar: state.seminar * W.ringkasan.seminar,
+        sidang: total_sidang * W.ringkasan.sidang,
+        bimbingan: nilai_bimbingan * W.ringkasan.bimbingan,
+      },
       bobot: {
         antar_penguji: { ketua: 0.425, p1: 0.425, p2: 0.15 },
         akhir: { seminar: 0.30, sidang: 0.40, bimbingan: 0.30 }
@@ -175,15 +124,141 @@
     };
   }
 
-  // Clear all inputs function
-  function clearAllInputs() {
-    // Reset all input elements only - let the event handlers update state and render
-    const inputs = document.querySelectorAll('input[type="number"]');
-    inputs.forEach(input => {
-      input.value = '';
-      // Trigger the input event to update state through existing handlers
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-    });
+  const SIMULASI_C_VALUES = [
+    { id: 'ketua_presentasi', value: 70 },
+    { id: 'ketua_materi', value: 70 },
+    { id: 'ketua_penulisan', value: 70 },
+    { id: 'ketua_hasil', value: 70 },
+    { id: 'p1_presentasi', value: 75 },
+    { id: 'p1_materi', value: 75 },
+    { id: 'p1_penulisan', value: 75 },
+    { id: 'p1_hasil', value: 75 },
+    { id: 'p2_cara', value: 70 },
+    { id: 'p2_kecepatan', value: 70 },
+    { id: 'p2_ketepatan', value: 70 },
+    { id: 'bim_ketepatan', value: 75 },
+    { id: 'bim_ketekunan', value: 75 },
+    { id: 'bim_tingkahlaku', value: 75 },
+    { id: 'nilai_seminar', value: 60 }
+  ];
+
+  function buildPreviewMarkup(data) {
+    const fmt = fmt2;
+    const fmtPercent = weight => `${fmt(weight * 100)}%`;
+
+    return `
+      <div class="preview-section">
+        <h3>Rekap Nilai Sidang</h3>
+        <table class="preview-table">
+          <thead>
+            <tr>
+              <th>Nilai Ketua Penguji</th>
+              <th>Nilai Penguji 1</th>
+              <th>Nilai Penguji 2</th>
+              <th>Total Nilai Sidang</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${fmt(data.nilai_ketua)}</td>
+              <td>${fmt(data.nilai_p1)}</td>
+              <td>${fmt(data.nilai_p2)}</td>
+              <td>${fmt(data.total_sidang)}</td>
+            </tr>
+            <tr>
+              <td>${fmtPercent(data.bobot.antar_penguji.ketua)}</td>
+              <td>${fmtPercent(data.bobot.antar_penguji.p1)}</td>
+              <td>${fmtPercent(data.bobot.antar_penguji.p2)}</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>${fmt(data.kontribusi_sidang.ketua)}</td>
+              <td>${fmt(data.kontribusi_sidang.p1)}</td>
+              <td>${fmt(data.kontribusi_sidang.p2)}</td>
+              <td>${fmt(data.total_sidang)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="preview-section">
+        <h3>Nilai Akhir</h3>
+        <table class="preview-table">
+          <thead>
+            <tr>
+              <th>Nilai Seminar</th>
+              <th>Nilai Sidang</th>
+              <th>Nilai Bimbingan</th>
+              <th>Total Nilai</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${fmt(data.seminar)}</td>
+              <td>${fmt(data.total_sidang)}</td>
+              <td>${fmt(data.nilai_bimbingan)}</td>
+              <td>${fmt(data.nilai_akhir)}</td>
+            </tr>
+            <tr>
+              <td>${fmtPercent(data.bobot.akhir.seminar)}</td>
+              <td>${fmtPercent(data.bobot.akhir.sidang)}</td>
+              <td>${fmtPercent(data.bobot.akhir.bimbingan)}</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>${fmt(data.kontribusi_ringkasan.seminar)}</td>
+              <td>${fmt(data.kontribusi_ringkasan.sidang)}</td>
+              <td>${fmt(data.kontribusi_ringkasan.bimbingan)}</td>
+              <td>${fmt(data.nilai_akhir)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="preview-grade">
+        <span>Grade</span>
+        <strong>${data.grade}</strong>
+      </div>
+    `;
+  }
+
+  let lastFocusedElement = null;
+
+  function setInputValue(id, value) {
+    const input = el(id);
+    if (!input) return;
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function simulateGradeC() {
+    SIMULASI_C_VALUES.forEach(({ id, value }) => setInputValue(id, value));
+  }
+
+  function showPreview() {
+    const overlay = el('preview_overlay');
+    const content = el('preview_content');
+    if (!overlay || !content) return;
+
+    const data = collect();
+    content.innerHTML = buildPreviewMarkup(data);
+
+    overlay.classList.add('show');
+    overlay.hidden = false;
+
+    const closeBtn = el('preview_close');
+    lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function hidePreview() {
+    const overlay = el('preview_overlay');
+    if (!overlay) return;
+    overlay.classList.remove('show');
+    overlay.hidden = true;
+
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+      lastFocusedElement = null;
+    }
   }
 
   function init() {
@@ -212,18 +287,36 @@
     // Seminar
     bindNumber('nilai_seminar', ['seminar']);
 
-    // Add clear button event listener
-    const clearBtn = document.querySelector('.clear-btn');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', clearAllInputs);
-    }
-
     render();
 
-    // Set last updated date from constant
+    const previewButton = el('preview_button');
+    const previewClose = el('preview_close');
+    const previewOverlay = el('preview_overlay');
+    const simulateButton = el('simulate_c');
+
+    if (previewButton) previewButton.addEventListener('click', showPreview);
+    if (previewClose) previewClose.addEventListener('click', hidePreview);
+    if (previewOverlay) {
+      previewOverlay.addEventListener('click', event => {
+        if (event.target === previewOverlay) hidePreview();
+      });
+    }
+    if (simulateButton) simulateButton.addEventListener('click', simulateGradeC);
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && previewOverlay && previewOverlay.classList.contains('show')) {
+        hidePreview();
+      }
+    });
+
+    // Set last updated date in Indonesian
     const target = document.getElementById('last_updated');
     if (target) {
-      target.textContent = LAST_UPDATED;
+      const hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+      const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+      const d = new Date();
+      const s = `${hari[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')} ${bulan[d.getMonth()]} ${d.getFullYear()}`;
+      target.textContent = s;
     }
   }
 
