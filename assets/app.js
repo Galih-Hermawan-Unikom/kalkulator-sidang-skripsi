@@ -69,21 +69,34 @@
   function fmt2(x) { return (Number(x)||0).toFixed(2); }
 
   function render() {
-    el('nilai_ketua').textContent = fmt2(calcRataKetua(state));
-    el('nilai_p1').textContent = fmt2(calcRataP1(state));
-    el('nilai_p2').textContent = fmt2(calcRataP2(state));
-    el('nilai_bimbingan').textContent = fmt2(calcBimbingan(state));
+    const nilaiKetuaEl = el('nilai_ketua');
+    const nilaiP1El = el('nilai_p1');
+    const nilaiP2El = el('nilai_p2');
+    const nilaiBimEl = el('nilai_bimbingan');
+    const totalSidangEl = el('total_sidang');
+    const nilaiAkhirEl = el('nilai_akhir');
+    const gradeEl = el('grade');
+
+    if (!nilaiKetuaEl || !nilaiP1El || !nilaiP2El || !nilaiBimEl || !totalSidangEl || !nilaiAkhirEl || !gradeEl) {
+      return;
+    }
+
+    nilaiKetuaEl.textContent = fmt2(calcRataKetua(state));
+    nilaiP1El.textContent = fmt2(calcRataP1(state));
+    nilaiP2El.textContent = fmt2(calcRataP2(state));
+    nilaiBimEl.textContent = fmt2(calcBimbingan(state));
 
     const totalSidang = calcTotalSidang(state);
     const nilaiAkhir = calcNilaiAkhir(state);
 
-    el('total_sidang').textContent = fmt2(totalSidang);
-    el('nilai_akhir').textContent = fmt2(nilaiAkhir);
-    el('grade').textContent = toGrade(nilaiAkhir);
+    totalSidangEl.textContent = fmt2(totalSidang);
+    nilaiAkhirEl.textContent = fmt2(nilaiAkhir);
+    gradeEl.textContent = toGrade(nilaiAkhir);
   }
 
   function bindNumber(id, path) {
     const input = el(id);
+    if (!input) return;
     input.addEventListener('input', () => {
       // clamp input value and update state
       input.value = input.value === '' ? '' : clamp100(input.value);
@@ -320,5 +333,9 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', init);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
