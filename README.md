@@ -1,5 +1,7 @@
 # Kalkulator Nilai Sidang Skripsi (Versi HTML Statis)
 
+Laman Web: [https://galih-hermawan-unikom.github.io/kalkulator-sidang-skripsi/](https://galih-hermawan-unikom.github.io/kalkulator-sidang-skripsi/)
+
 Versi web ringan yang mereplikasi rumus dari template Excel `perhitungan nilai sidang-2025-08-13.xlsx`.
 
 ## Cara Pakai
