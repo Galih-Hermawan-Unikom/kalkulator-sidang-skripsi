@@ -155,6 +155,42 @@
     { id: 'nilai_seminar', value: 60 }
   ];
 
+  const SIMULASI_B_VALUES = [
+    { id: 'ketua_presentasi', value: 78 },
+    { id: 'ketua_materi', value: 78 },
+    { id: 'ketua_penulisan', value: 78 },
+    { id: 'ketua_hasil', value: 78 },
+    { id: 'p1_presentasi', value: 80 },
+    { id: 'p1_materi', value: 80 },
+    { id: 'p1_penulisan', value: 80 },
+    { id: 'p1_hasil', value: 80 },
+    { id: 'p2_cara', value: 78 },
+    { id: 'p2_kecepatan', value: 78 },
+    { id: 'p2_ketepatan', value: 78 },
+    { id: 'bim_ketepatan', value: 80 },
+    { id: 'bim_ketekunan', value: 80 },
+    { id: 'bim_tingkahlaku', value: 80 },
+    { id: 'nilai_seminar', value: 80 }
+  ];
+
+  const SIMULASI_A_VALUES = [
+    { id: 'ketua_presentasi', value: 80 },
+    { id: 'ketua_materi', value: 80 },
+    { id: 'ketua_penulisan', value: 80 },
+    { id: 'ketua_hasil', value: 80 },
+    { id: 'p1_presentasi', value: 80 },
+    { id: 'p1_materi', value: 80 },
+    { id: 'p1_penulisan', value: 80 },
+    { id: 'p1_hasil', value: 80 },
+    { id: 'p2_cara', value: 80 },
+    { id: 'p2_kecepatan', value: 80 },
+    { id: 'p2_ketepatan', value: 80 },
+    { id: 'bim_ketepatan', value: 85 },
+    { id: 'bim_ketekunan', value: 85 },
+    { id: 'bim_tingkahlaku', value: 85 },
+    { id: 'nilai_seminar', value: 80 }
+  ];
+
   function buildPreviewMarkup(data) {
     const fmt = fmt2;
     const fmtPercent = weight => `${fmt(weight * 100)}%`;
@@ -242,8 +278,8 @@
     input.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
-  function simulateGradeC() {
-    SIMULASI_C_VALUES.forEach(({ id, value }) => setInputValue(id, value));
+  function applySimulation(values) {
+    values.forEach(({ id, value }) => setInputValue(id, value));
   }
 
   function showPreview() {
@@ -314,7 +350,9 @@
         if (event.target === previewOverlay) hidePreview();
       });
     }
-    if (simulateButton) simulateButton.addEventListener('click', simulateGradeC);
+    if (el('simulate_c')) el('simulate_c').addEventListener('click', () => applySimulation(SIMULASI_C_VALUES));
+    if (el('simulate_b')) el('simulate_b').addEventListener('click', () => applySimulation(SIMULASI_B_VALUES));
+    if (el('simulate_a')) el('simulate_a').addEventListener('click', () => applySimulation(SIMULASI_A_VALUES));
 
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && previewOverlay && previewOverlay.classList.contains('show')) {
